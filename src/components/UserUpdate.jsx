@@ -1,7 +1,9 @@
 import React from 'react';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 
 const UserUpdate = () => {
+
+    const navigate = useNavigate();
 
     const user = useLoaderData();
 
@@ -11,7 +13,7 @@ const UserUpdate = () => {
         const email = e.target.email.value;
         const updateUser = {name, email};
 
-        fetch(``, {
+        fetch(`http://localhost:3000/users/${user._id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type' : 'application/json'
@@ -20,7 +22,10 @@ const UserUpdate = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log('After update', data);
+                if(data.modifiedCount) {
+                    alert('User updated successfully!');
+                    navigate('/');
+                }
             })
     }
 
